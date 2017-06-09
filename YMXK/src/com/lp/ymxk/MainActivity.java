@@ -23,9 +23,9 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 
 @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class MainActivity extends Activity {
-	private final static int SYSTEM_NOTIFICATION_BAR = 25;// 系统通知栏高度
 	private int windowMaxHeight = 0;
 	private int startY = 0;
+	private int startX = 0;
 
 	List list = new ArrayList<String>();
 	private ListView lv;
@@ -66,14 +66,12 @@ public class MainActivity extends Activity {
 			}
 
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				double a = (windowMaxHeight- iv.getHeight() - SYSTEM_NOTIFICATION_BAR +0.00) / (totalItemCount - visibleItemCount);
+				double a = (windowMaxHeight +0.00) / (totalItemCount - visibleItemCount);
 				if (flag) {
 					ViewHelper.setTranslationY(iv, (float) (firstVisibleItem * a));
 				}
 			}
 		});
-
-		windowMaxHeight = getWindowManager().getDefaultDisplay().getHeight() - iv.getHeight() - SYSTEM_NOTIFICATION_BAR;
 		iv.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				flag = false;
@@ -81,30 +79,43 @@ public class MainActivity extends Activity {
 				handler.removeCallbacksAndMessages(null);
 				switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
+						startX = (int) event.getRawX();
 						startY = (int) event.getRawY();
 						break;
 					case MotionEvent.ACTION_MOVE:
+						int newX = (int) event.getRawX();
 						int newY = (int) event.getRawY();
+						int offsetX = (int) (newX - startX);
 						int offsetY = (int) (newY - startY);
-	
+
 						double d = ViewHelper.getTranslationY(iv) / windowMaxHeight;
 						int current = (int) (list.size() * d);
-	
-						int temp = (int) (iv.getTranslationY() + offsetY);
-						if (temp < 0) {
-							temp = 0;
+						
+						int tempX = (int) (iv.getTranslationX() + offsetX);
+						int tempY = (int) (iv.getTranslationY() + offsetY);
+						if (tempX < 0) {
+							tempX = 0;
+						}
+						
+						if (tempY < 0) {
+							tempY = 0;
 							current = 0;
 						}
-						if (temp > windowMaxHeight - iv.getHeight() - SYSTEM_NOTIFICATION_BAR) {
-							temp = windowMaxHeight - iv.getHeight() - SYSTEM_NOTIFICATION_BAR;
+						if (tempX > lv.getMeasuredWidth()- iv.getWidth()) {
+							tempX = lv.getMeasuredWidth()- iv.getWidth() ;
+						}
+						
+						if (tempY > windowMaxHeight ) {
+							tempY = windowMaxHeight  ;
 							current = list.size();
 						}
-						ViewHelper.setTranslationY(iv, temp);
+						ViewHelper.setTranslationX(iv, tempX);
+						ViewHelper.setTranslationY(iv, tempY);
 						System.out.println("总位置：" + windowMaxHeight);
-						System.out.println("temp:" + temp);
+						System.out.println("temp:" + tempY);
 						System.out.println("位置：" + ViewHelper.getTranslationY(iv));
-	
 						lv.setSelection(current);
+						startX = newX;
 						startY = newY;
 						break;
 					case MotionEvent.ACTION_UP:
@@ -123,6 +134,19 @@ public class MainActivity extends Activity {
 		});
 	}
 
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		//获取status_bar_height资源的ID  
+		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");  
+	    //根据资源ID获取响应的尺寸值  
+		int systemNotificationBarHeight = getResources().getDimensionPixelSize(resourceId);  
+		if(true){
+			ViewHelper.setTranslationX(iv, getWindowManager().getDefaultDisplay().getWidth() - iv.getWidth());
+			windowMaxHeight = getWindowManager().getDefaultDisplay().getHeight() - iv.getHeight() -systemNotificationBarHeight;
+		}
+		super.onWindowFocusChanged(hasFocus);
+	}
+	
 	class MyAdapter extends BaseAdapter {
 
 		public int getCount() {
