@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.lp.blood.ui.view.BloodView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="350dp"
+        android:paddingTop="10dp" >
+
+        <Button
+            android:id="@+id/btn_start_bgbar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/holo_blue_light" />
+
+        <Button
+            android:id="@+id/btn_start_fgbar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/holo_red_light" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#ff0000" />
+
+        <ImageButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/pr_bg" />
+
+        <com.lp.blood.ui.view.ArcProgressView
+            android:layout_width="56dp"
+            android:layout_height="56dp" />
+
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/selector_btn_end" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="75dp"
+            android:background="@drawable/girl_1" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="0%" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="2800" />
+    </com.lp.blood.ui.view.BloodView>
+
+</LinearLayout>

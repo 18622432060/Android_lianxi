@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/first_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3c3c3c"
+        android:padding="10dp"
+        android:text="A"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+    <com.itheima74.quickindex.view.SwipeLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- item内容的布局 -->
+
+        <include layout="@layout/layout_content" />
+
+        <!-- delete区域的布局 -->
+
+        <include layout="@layout/layout_delete" />
+    </com.itheima74.quickindex.view.SwipeLayout>
+
+
+</LinearLayout>

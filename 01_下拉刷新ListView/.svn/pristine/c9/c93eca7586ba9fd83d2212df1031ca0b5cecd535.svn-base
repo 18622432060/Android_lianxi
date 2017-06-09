@@ -1,0 +1,66 @@
+package com.itheima74.refreshlist.ui;
+
+import com.itheima74.refreshlist.R;
+import com.itheima74.refreshlist.R.layout;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+
+/**
+ * 包含下拉刷新功能的ListView
+ * @author poplar
+ *
+ */
+public class RefreshListView extends ListView {
+
+	private View mHeaderView; // 头布局
+
+	public RefreshListView(Context context) {
+		super(context);
+		init();
+	}
+
+	public RefreshListView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public RefreshListView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		init();
+	}
+
+	/**
+	 * 初始化头布局, 脚布局
+	 * 滚动监听
+	 */
+	private void init() {
+		initHeaderView();
+	}
+
+	/**
+	 * 初始化头布局
+	 */
+	private void initHeaderView() {
+
+		mHeaderView = View.inflate(getContext(), R.layout.layout_header_list, null);
+		
+		// 提前手动测量宽高
+		mHeaderView.measure(0, 0);// 按照设置的规则测量
+		
+		int mHeaderViewHeight = mHeaderView.getMeasuredHeight(); // 获取到测量后的高度
+		System.out.println(" measuredHeight: " + mHeaderViewHeight);
+		
+		// 设置内边距, 可以隐藏当前控件 , -自身高度
+		mHeaderView.setPadding(0, -mHeaderViewHeight, 0, 0);
+		
+        // 在设置数据适配器之前执行添加 头布局/脚布局 的方法.
+        addHeaderView(mHeaderView);
+	}
+	
+	
+
+}

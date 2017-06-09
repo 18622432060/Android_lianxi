@@ -1,0 +1,81 @@
+package com.itheima74.sliding.ui;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+
+/**
+ * 侧滑面板控件, 抽屉面板.
+ * @author poplar
+ * 
+ *   测量             摆放     绘制
+  measure   ->  layout  ->  draw
+      |           |          |
+  onMeasure -> onLayout -> onDraw 重写这些方法, 实现自定义控件
+  
+	  View流程
+	  onMeasure() (在这个方法里指定自己的宽高) -> onDraw() (绘制自己的内容)
+	  
+	  ViewGroup流程
+	  onMeasure() (指定自己的宽高, 所有子View的宽高)-> onLayout() (摆放所有子View) -> onDraw() (绘制内容)
+ *
+ */
+public class SlideMenu extends ViewGroup {
+
+	public SlideMenu(Context context) {
+		super(context);
+	}
+
+	public SlideMenu(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	public SlideMenu(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+	
+	/**
+	 * 测量并设置 所有子View的宽高
+	 * widthMeasureSpec: 当前控件的宽度测量规则
+	 * heightMeasureSpec: 当前控件的高度测量规则
+	 */
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		
+		// 指定左面板的宽高
+		View leftMenu = getChildAt(0);
+		leftMenu.measure(leftMenu.getLayoutParams().width, heightMeasureSpec);
+		
+		// 指定主面板的宽高
+		View mainContent = getChildAt(1);
+		mainContent.measure(widthMeasureSpec, heightMeasureSpec);
+		
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+
+	/**
+	 * changed: 当前控件的尺寸大小, 位置 是否发生了变化
+	 * left:当前控件 左边距
+	 * top:当前控件 顶边距
+	 * right:当前控件 右边界
+	 * bottom:当前控件 下边界
+	 */
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		
+		// 摆放内容, 左面板
+		View leftMenu = getChildAt(0);
+		leftMenu.layout(-leftMenu.getMeasuredWidth(), 0, 0, b);
+		
+		// 主面板
+		getChildAt(1).layout(l, t, r, b);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		return super.onTouchEvent(event);
+	}
+
+}
